@@ -1,0 +1,22 @@
+<div id="<%= dom_id(comment) %>" class="card mb-1">
+  <div class="card-body">
+    <div class="float-left">
+      <div class="lead">
+        <%= comment.content %>
+      </div>
+
+      <div>
+        <small>Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %></small>
+      </div>
+    </div>
+
+    <div class="btn-group float-right">
+      <% if comment.user == current_user -%>
+        <%= link_to 'Destroy', [comment.link, comment],
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              class: "btn btn-sm btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+</div>
