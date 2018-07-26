@@ -5,30 +5,46 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <nav>
-      <% if user_signed_in? %>
-        <ul class="nav navbar-nav navbar-right">
-          <li><%= link_to 'Submit link', new_link_path %></li>
-          <li><%= link_to 'Account', edit_user_registration_path %></li>
-          <li><%= link_to 'Sign out', destroy_user_session_path, method: :delete %></li>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <%= link_to 'Seennit', root_path, class: 'navbar-brand' %>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <% if user_signed_in? %>
+            <li class="nav-link">
+              <%= link_to 'Submit link', new_link_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-link">
+              <%= link_to 'Account', edit_user_registration_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-link">
+              <%= link_to 'Sign out', destroy_user_session_path, class: 'nav-link', method: :delete %>
+            </li>
+          <% else %>
+            <li class="nav-link">
+              <%= link_to 'Sign up', new_user_registration_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-link">
+              <%= link_to 'Sign in', new_user_session_path, class: 'nav-link' %>
+            </li>
+          <% end %>
         </ul>
-      <% else %>
-        <ul class="nav navbar-nav pull-right">
-          <li><%= link_to 'Sign up', new_user_registration_path %></li>
-          <li><%= link_to 'Sign in', new_user_session_path %></li>
-        </ul>
-      <% end %>
+      </div>
     </nav>
 
-    <% flash.each do |name, msg| %>
-      <%= content_tag(:div, msg, class: "alert alert-#{name}") %>
-    <% end %>
+    <main role="main" class="container">
+      <% flash.each do |name, msg| %>
+        <%= content_tag(:div, msg, class: "alert alert-#{name}") %>
+      <% end %>
 
-    <%= yield %>
+      <%= yield %>
+    </main>
   </body>
 </html>
