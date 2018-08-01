@@ -1,0 +1,28 @@
+<div id="<%= dom_id(link) %>" class="card mb-1">
+  <div class="card-body">
+    <div class="float-left">
+      <div>
+        <small>
+          Submitted <strong><%= time_ago_in_words(link.created_at) %> ago</strong> by <%= link.user.email %>
+        </small>
+      </div>
+
+      <div class="lead">
+        <strong><%= link_to link.title, link.url %></strong>
+      </div>
+
+      <div>
+        <small><%= link_to pluralize(link.comments.count, 'Comment'), link %></small>
+      </div>
+    </div>
+
+    <div class="btn-group float-right">
+      <% if link.user == current_user -%>
+        <%= link_to 'Destroy', link,
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              class: "btn btn-sm btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+</div>
