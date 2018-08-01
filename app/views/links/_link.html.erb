@@ -1,7 +1,7 @@
 <div id="<%= dom_id(link) %>" class="card mb-1">
   <div class="card-body">
     <div class="float-left">
-      <div>
+      <div class="text-muted">
         <small>
           Submitted <strong><%= time_ago_in_words(link.created_at) %> ago</strong> by <%= link.user.email %>
         </small>
@@ -11,7 +11,7 @@
         <strong><%= link_to link.title, link.url %></strong>
       </div>
 
-      <div>
+      <div class="mb-1">
         <small><%= link_to pluralize(link.comments.count, 'Comment'), link %></small>
       </div>
 

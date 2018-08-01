@@ -1,12 +1,12 @@
 <div id="<%= dom_id(comment) %>" class="card mb-1">
   <div class="card-body">
     <div class="float-left">
-      <div class="lead">
-        <%= comment.content %>
+      <div class="text-muted">
+        <small>Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %></small>
       </div>
 
-      <div>
-        <small>Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %></small>
+      <div class="lead">
+        <%= comment.content %>
       </div>
     </div>
 
