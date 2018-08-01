@@ -1,5 +1,7 @@
 class CommentsController < ApplicationController
-  before_action :authorized_user
+  include Votable
+
+  before_action :authorized_user, only: [:create, :destroy]
 
   # POST /comments
   def create

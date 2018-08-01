@@ -5,8 +5,21 @@
         <small>Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %></small>
       </div>
 
-      <div class="lead">
+      <div class="lead mb-2">
         <%= comment.content %>
+      </div>
+
+      <div class="btn-group">
+        <%= link_to upvote_link_comment_path(comment.link, comment),
+              method: :put, class: "btn btn-outline-secondary btn-sm" do %>
+          Upvote
+          <%= comment.get_upvotes.size %>
+        <% end %>
+        <%= link_to downvote_link_comment_path(comment.link, comment),
+              method: :put, class: "btn btn-outline-secondary btn-sm" do %>
+          Downvote
+          <%= comment.get_downvotes.size %>
+        <% end %>
       </div>
     </div>
 
