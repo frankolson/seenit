@@ -2,6 +2,17 @@
   <strong><%= link_to @link.title, @link.url %></strong>
 </h1>
 
+<div class="btn-group">
+  <%= link_to upvote_link_path(@link), method: :put, class: "btn btn-outline-secondary btn-sm" do %>
+    Upvote
+    <%= @link.get_upvotes.size %>
+  <% end %>
+  <%= link_to downvote_link_path(@link), method: :put, class: "btn btn-outline-secondary btn-sm" do %>
+    Downvote
+    <%= @link.get_downvotes.size %>
+  <% end %>
+</div>
+
 <div class="comment-count">
   <small>
     <%= pluralize(@link.comments.count, 'Comment') %>

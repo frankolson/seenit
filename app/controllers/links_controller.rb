@@ -1,5 +1,5 @@
 class LinksController < ApplicationController
-  before_action :set_link, only: [:show, :edit, :update, :destroy]
+  before_action :set_link, except: [:index, :new]
   skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :authorized_user, only: [:edit, :update, :destroy]
 
@@ -48,6 +48,18 @@ class LinksController < ApplicationController
     @link.destroy
     flash[:success] = 'Link was successfully destroyed.'
     redirect_to links_url
+  end
+
+  def upvote
+    @link.upvote_by current_user
+    flash[:success] = 'Link was successfully upvoted.'
+    redirect_back fallback_location: root_url
+  end
+
+  def downvote
+    @link.downvote_from current_user
+    flash[:success] = 'Link was successfully downvoted.'
+    redirect_back fallback_location: root_url
   end
 
   private
