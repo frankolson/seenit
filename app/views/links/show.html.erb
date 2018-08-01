@@ -40,5 +40,5 @@
 </div>
 
 <div class="link-comments">
-  <%= render partial: @link.comments %>
+  <%= render partial: @link.comments.order(cached_weighted_average: :desc) %>
 </div>

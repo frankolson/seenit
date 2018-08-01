@@ -7,7 +7,7 @@ class LinksController < ApplicationController
 
   # GET /links
   def index
-    @links = Link.all
+    @links = Link.all.order(cached_weighted_average: :desc)
   end
 
   # GET /links/1
