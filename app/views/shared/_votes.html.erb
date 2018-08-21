@@ -1,0 +1,12 @@
+<% upvoted = current_user&.voted_up_for? record %>
+<% downvoted = current_user&.voted_down_for? record %>
+
+<%= link_to upvote_path, method: :put, class: "#{upvoted ? 'text-success' : 'text-muted'}" do %>
+  <i class="fas fa-arrow-alt-circle-up"></i>
+<% end %>
+
+<%= record.votes_for.size %>
+
+<%= link_to downvote_path, method: :put, class: "#{downvoted ? 'text-danger' : 'text-muted'}" do %>
+  <i class="fas fa-arrow-alt-circle-down"></i>
+<% end %>

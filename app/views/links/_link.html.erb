@@ -1,39 +1,34 @@
-<div id="<%= dom_id(link) %>" class="card mb-1">
+<div id="<%= dom_id(link) %>" class="card">
   <div class="card-body">
-    <div class="float-left">
-      <div class="text-muted">
-        <small>
-          Submitted <strong><%= time_ago_in_words(link.created_at) %> ago</strong> by <%= link.user.email %>
-        </small>
+    <div class="row">
+      <div class="col-2 col-md-1 d-flex flex-column align-items-center">
+        <%= render partial: 'shared/votes', locals: {
+              record: link,
+              upvote_path: upvote_link_path(link),
+              downvote_path: downvote_link_path(link) } %>
       </div>
 
-      <div class="lead">
-        <strong><%= link_to link.title, link.url %></strong>
-      </div>
+      <div class="col-10 col-md-11">
+        <div class="text-muted">
+          <small>
+            Submitted <strong><%= time_ago_in_words(link.created_at) %> ago</strong> by <%= link.user.email %>
+            <% if link.user == current_user -%>
+              | <%= link_to 'Destroy', link,
+                    method: :delete,
+                    data: { confirm: 'Are you sure?' },
+                    class: "text-danger" %>
+            <% end %>
+          </small>
+        </div>
 
-      <div class="mb-1">
-        <small><%= link_to pluralize(link.comments_count, 'Comment'), link %></small>
-      </div>
+        <div class="lead">
+          <strong><%= link_to link.title, link.url %></strong>
+        </div>
 
-      <div class="btn-group">
-        <%= link_to upvote_link_path(link), method: :put, class: "btn btn-outline-secondary btn-sm" do %>
-          Upvote
-          <%= link.get_upvotes.size %>
-        <% end %>
-        <%= link_to downvote_link_path(link), method: :put, class: "btn btn-outline-secondary btn-sm" do %>
-          Downvote
-          <%= link.get_downvotes.size %>
-        <% end %>
+        <div class="mb-1">
+          <small><%= link_to pluralize(link.comments_count, 'Comment'), link %></small>
+        </div>
       </div>
-    </div>
-
-    <div class="btn-group float-right">
-      <% if link.user == current_user -%>
-        <%= link_to 'Destroy', link,
-              method: :delete,
-              data: { confirm: 'Are you sure?' },
-              class: "btn btn-sm btn-danger" %>
-      <% end %>
     </div>
   </div>
 </div>
