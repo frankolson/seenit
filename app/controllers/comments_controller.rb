@@ -1,17 +1,17 @@
 class CommentsController < ApplicationController
   include Votable
 
-  before_action :authorized_user, only: [:create, :destroy]
+  before_action :authorized_user, only: [:destroy]
+  before_action :set_commentable, only: [:create]
 
   # POST /comments
   def create
-    @comment = Comment.new(comment_params)
-    @comment.link_id = params[:link_id]
+    @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
 
     if @comment.save
       flash[:success] = 'Comment was successfully created.'
-      redirect_to @comment.link
+      redirect_back fallback_location: root_path
     else
       flash[:error] = @comment.errors.full_messages.to_sentence
       redirect_back fallback_location: root_path
@@ -27,10 +27,6 @@ class CommentsController < ApplicationController
 
   private
 
-    def set_comment
-      @comment = current_user.comments.find_by(id: params[:id])
-    end
-
     def authorized_user
       set_comment
 
@@ -38,6 +34,15 @@ class CommentsController < ApplicationController
         flash[:error] = "Sorry, you can't edit someone else's comments."
         redirect_back fallback_location: root_path
       end
+    end
+
+    def set_comment
+      @comment = current_user.comments.find_by(id: params[:id])
+    end
+
+    def set_commentable
+      @commentable = Comment.find_by_id(params[:comment_id]) if params[:comment_id]
+      @commentable = Link.find_by_id(params[:link_id]) if params[:link_id]
     end
 
     def comment_params

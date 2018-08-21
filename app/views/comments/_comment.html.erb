@@ -5,27 +5,41 @@
         <small>Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %></small>
       </div>
 
-      <div class="lead mb-2">
-        <%= comment.content %>
-      </div>
-
       <div class="btn-group">
-        <%= link_to upvote_link_comment_path(comment.link, comment),
+        <%= link_to upvote_comment_path(comment),
               method: :put, class: "btn btn-outline-secondary btn-sm" do %>
           Upvote
           <%= comment.get_upvotes.size %>
         <% end %>
-        <%= link_to downvote_link_comment_path(comment.link, comment),
+        <%= link_to downvote_comment_path(comment),
               method: :put, class: "btn btn-outline-secondary btn-sm" do %>
           Downvote
           <%= comment.get_downvotes.size %>
         <% end %>
       </div>
+
+      <div class="lead mb-2">
+        <%= comment.content %>
+      </div>
+
+      <%= form_for [comment, Comment.new] do |f| %>
+        <div class="form-group">
+          <%= f.text_area :content, placeholder: "Add a Reply",
+                class: "form-control" %>
+        </div>
+
+        <%= f.submit "Reply", class: "btn btn-primary"  %>
+      <% end %>
+
+      <ul>
+          <%= render partial: 'comments/comment',
+                collection: comment.comments.order(cached_weighted_average: :desc) %>
+      </ul>
     </div>
 
     <div class="btn-group float-right">
       <% if comment.user == current_user -%>
-        <%= link_to 'Destroy', [comment.link, comment],
+        <%= link_to 'Destroy', comment,
               method: :delete,
               data: { confirm: 'Are you sure?' },
               class: "btn btn-sm btn-danger" %>

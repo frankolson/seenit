@@ -10,14 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_170135) do
+ActiveRecord::Schema.define(version: 2018_08_21_003335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "link_id"
+    t.string "commentable_type"
+    t.bigint "commentable_id"
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -28,7 +29,8 @@ ActiveRecord::Schema.define(version: 2018_08_01_170135) do
     t.integer "cached_weighted_score", default: 0
     t.integer "cached_weighted_total", default: 0
     t.float "cached_weighted_average", default: 0.0
-    t.index ["link_id"], name: "index_comments_on_link_id"
+    t.integer "comments_count", default: 0, null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -45,6 +47,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_170135) do
     t.integer "cached_weighted_score", default: 0
     t.integer "cached_weighted_total", default: 0
     t.float "cached_weighted_average", default: 0.0
+    t.integer "comments_count", default: 0, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -78,6 +81,5 @@ ActiveRecord::Schema.define(version: 2018_08_01_170135) do
     t.index ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
   end
 
-  add_foreign_key "comments", "links"
   add_foreign_key "comments", "users"
 end
