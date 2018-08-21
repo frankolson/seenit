@@ -1,46 +1,43 @@
-<div id="<%= dom_id(comment) %>" class="card mb-1">
-  <div class="card-body">
-    <div class="text-muted">
-      <small>
-        Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %>
-        <% if comment.user == current_user -%>
-          | <%= link_to 'Destroy', comment,
-                method: :delete,
-                data: { confirm: 'Are you sure?' },
-                class: "text-danger" %>
-        <% end %>
-      </small>
+<div id="<%= dom_id(comment) %>" class="mb-1">
+  <div class="d-flex flex-row">
+    <div class="d-flex flex-column align-items-center mr-2">
+      <%= render partial: 'shared/votes', locals: {
+            record: comment,
+            upvote_path: upvote_comment_path(comment),
+            downvote_path: downvote_comment_path(comment) } %>
+      <i class="threadline"></i>
     </div>
 
-    <div class="btn-group">
-      <%= link_to upvote_comment_path(comment),
-            method: :put, class: "btn btn-outline-secondary btn-sm" do %>
-        Upvote
-        <%= comment.get_upvotes.size %>
-      <% end %>
-      <%= link_to downvote_comment_path(comment),
-            method: :put, class: "btn btn-outline-secondary btn-sm" do %>
-        Downvote
-        <%= comment.get_downvotes.size %>
-      <% end %>
-    </div>
-
-    <div class="lead mb-2">
-      <%= comment.content %>
-    </div>
-
-    <%= form_for [comment, Comment.new] do |f| %>
-      <div class="form-group">
-        <%= f.text_area :content, placeholder: "Add a Reply",
-              class: "form-control" %>
+    <div class="flex-fill">
+      <div class="text-muted">
+        <small>
+          Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by <%= comment.user.email %>
+          <% if comment.user == current_user -%>
+            | <%= link_to 'Destroy', comment,
+                    method: :delete,
+                    data: { confirm: 'Are you sure?' },
+                    class: "text-danger" %>
+          <% end %>
+        </small>
       </div>
 
-      <%= f.submit "Reply", class: "btn btn-primary"  %>
-    <% end %>
+      <div class="lead mb-2">
+        <%= comment.content %>
+      </div>
 
-    <ul>
+      <%= form_for [comment, Comment.new] do |f| %>
+        <div class="form-group">
+          <%= f.text_area :content, placeholder: "Add a Reply",
+                class: "form-control" %>
+        </div>
+
+        <%= f.submit "Reply", class: "btn btn-primary"  %>
+      <% end %>
+
+      <ul class="mt-1">
         <%= render partial: 'comments/comment',
               collection: comment.comments.order(cached_weighted_average: :desc) %>
-    </ul>
+      </ul>
+    </div>
   </div>
 </div>

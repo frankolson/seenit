@@ -1,14 +1,14 @@
 <div class="card mb-2">
   <div class="card-body">
-    <div class="row">
-      <div class="col-1 d-flex flex-column align-items-center">
+    <div class="d-flex flex-row">
+      <div class="d-flex flex-column align-items-center mr-4">
         <%= render partial: 'shared/votes', locals: {
               record: @link,
               upvote_path: upvote_link_path(@link),
               downvote_path: downvote_link_path(@link) } %>
       </div>
 
-      <div class="col-11">
+      <div>
         <h1>
           <strong><%= link_to @link.title, @link.url %></strong>
         </h1>
@@ -43,7 +43,7 @@
             } %>
     </div>
 
-    <div class="link-comments">
+    <div class="comments">
       <%= render partial: @link.comments.order(cached_weighted_average: :desc) %>
     </div>
   </div>
