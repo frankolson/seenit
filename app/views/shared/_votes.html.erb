@@ -5,7 +5,7 @@
   <i class="fas fa-arrow-alt-circle-up"></i>
 <% end %>
 
-<%= record.votes_for.size %>
+<%= record.weighted_score %>
 
 <%= link_to downvote_path, method: :put, class: "#{downvoted ? 'text-danger' : 'text-muted'}" do %>
   <i class="fas fa-arrow-alt-circle-down"></i>
