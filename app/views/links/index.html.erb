@@ -1,5 +1,14 @@
 <h1>Links</h1>
 
+<% if user_signed_in? %>
+  <div class="row">
+    <div class="col-12 mb-2">
+      <%= link_to 'New Link', new_link_path %>
+    </div>
+  </div>
+<% end %>
+
+
 <div class="row">
   <% @links.each do |link| %>
     <div class="col-12">
@@ -7,9 +16,3 @@
     </div>
   <% end %>
 </div>
-
-<br>
-
-<% if user_signed_in? %>
-  <%= link_to 'New Link', new_link_path %>
-<% end %>
