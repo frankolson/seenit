@@ -1,7 +1,8 @@
 class CommentsController < ApplicationController
   include Votable
 
-  before_action :set_comment, except: [:create]
+  before_action :set_comment, only: [:insert_reply_form, :remove_reply_form]
+  before_action :set_my_comment, only: [:destroy]
   before_action :set_commentable, only: [:create]
   before_action :authorized_user, only: [:destroy]
 
@@ -35,6 +36,10 @@ class CommentsController < ApplicationController
   private
 
     def set_comment
+      @comment = Comment.find(params[:id])
+    end
+
+    def set_my_comment
       @comment = current_user.comments.find_by(id: params[:id])
     end
 
