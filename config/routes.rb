@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     member do
       put :upvote
       put :downvote
+      get :insert_reply_form
+      get :remove_reply_form
     end
   end
 

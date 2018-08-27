@@ -1,0 +1,29 @@
+<div class="mb-1">
+  <small>
+    <% if user_signed_in? %>
+      <%= link_to 'Reply', remove_reply_form_comment_path(comment),
+            remote: 'true',
+            class: 'text-muted' %>
+      <% if comment.user == current_user -%>
+        | <%= link_to 'Destroy', comment,
+                method: :delete,
+                data: { confirm: 'Are you sure?' },
+                class: 'text-danger' %>
+      <% end %>
+    <% end %>
+  </small>
+</div>
+
+<div>
+  <%= form_for [comment, Comment.new] do |f| %>
+    <div class="form-group">
+      <%= f.text_area :content, placeholder: 'Add a Reply',
+            class: 'form-control' %>
+    </div>
+
+    <%= f.submit 'Reply', class: 'btn btn-sm btn-primary'  %>
+    <%= link_to 'Cancel', remove_reply_form_comment_path(comment),
+          remote: 'true',
+          class: 'btn btn-sm btn-danger' %>
+  <% end %>
+</div>

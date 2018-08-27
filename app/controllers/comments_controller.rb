@@ -1,8 +1,9 @@
 class CommentsController < ApplicationController
   include Votable
 
-  before_action :authorized_user, only: [:destroy]
+  before_action :set_comment, except: [:create]
   before_action :set_commentable, only: [:create]
+  before_action :authorized_user, only: [:destroy]
 
   # POST /comments
   def create
@@ -18,6 +19,12 @@ class CommentsController < ApplicationController
     end
   end
 
+  def insert_reply_form
+  end
+
+  def remove_reply_form
+  end
+
   # DELETE /comments/1
   def destroy
     @comment.destroy
@@ -27,15 +34,6 @@ class CommentsController < ApplicationController
 
   private
 
-    def authorized_user
-      set_comment
-
-      if @comment.nil?
-        flash[:error] = "Sorry, you can't edit someone else's comments."
-        redirect_back fallback_location: root_path
-      end
-    end
-
     def set_comment
       @comment = current_user.comments.find_by(id: params[:id])
     end
@@ -43,6 +41,13 @@ class CommentsController < ApplicationController
     def set_commentable
       @commentable = Comment.find_by_id(params[:comment_id]) if params[:comment_id]
       @commentable = Link.find_by_id(params[:link_id]) if params[:link_id]
+    end
+
+    def authorized_user
+      if @comment.nil?
+        flash[:error] = "Sorry, you can't edit someone else's comments."
+        redirect_back fallback_location: root_path
+      end
     end
 
     def comment_params

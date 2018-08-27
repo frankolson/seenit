@@ -1,0 +1,13 @@
+<small class="text-muted">
+  <% if user_signed_in? %>
+    <%= link_to 'Reply', insert_reply_form_comment_path(comment),
+          remote: 'true',
+          class: 'text-muted' %>
+    <% if comment.user == current_user -%>
+      | <%= link_to 'Destroy', comment,
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              class: 'text-danger' %>
+    <% end %>
+  <% end %>
+</small>
